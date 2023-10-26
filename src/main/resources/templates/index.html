@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Payment Integration - Spring Boot</title>
+  <link href="style.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+<div class="model" id="model">
+  <div class="blur"></div>
+  <div class="model-container">
+    <form id="payment-form">
+      <div id="card-element">
+        <!-- Stripe Card Element will be inserted here. -->
+      </div>
+      <!-- Used to display form errors. -->
+      <div id="card-errors" role="alert"></div>
+      <button id="submit-button">Submit Payment</button>
+    </form>
+
+
+  </div>
+</div>
+
+<div class="container">
+  <h3>Shoe Page</h3>
+   <div class="card-data">
+     <div class="cart">
+       <div class="cart-left">
+         <div class="image-container">
+           <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/00097f2522784e6d96b0aba400aa87a1_9366/Daily_3.0_Shoes_Grey_FW3270_01_standard.jpg" alt="shoe-1">
+         </div>
+         <!--<div class="cart-left-content">
+           <button id="checkout">checkout</button>
+         </div>-->
+       </div>
+       <div class="cart-right">
+         <p>Total Price</p>
+         <strong>
+           <h5>₹3000.00</h5>
+         </strong>
+
+
+       </div>
+     </div>
+<!--     <form action="/create-checkout-session" method="POST">-->
+<!--       <button type="submit" id="checkout-button">Checkout</button>-->
+<!--     </form>-->
+            <button type="submit" id="checkout-button">Checkout</button>
+
+   </div>
+
+</div>
+<!--<script src="payment.js" type="text/javascript">-->
+
+<!--</script>-->
+
+<script>
+  document.getElementById('checkout-button').addEventListener("click", ()=>{
+    console.log("Checkout btn clicked...!");
+    axios({
+      method: 'post',
+      url: '/create-checkout-session',
+      data: {
+        amount: 3000,
+        productName: "Black Leather Shoe - (Adidas)"
+      }
+    })
+            .then((res)=>{
+              console.log(res);
+              let a = document.createElement('a');
+              a.href = res.data;
+              a.target = '_blank';
+              a.click();
+            }).catch((err)=>{
+              console.log("Error: ", err);
+    });
+  });
+</script>
+</body>
+</html>
